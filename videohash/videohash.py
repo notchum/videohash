@@ -25,7 +25,6 @@ from .videoduration import video_duration
 
 
 class VideoHash:
-
     """
     VideoHash class provides an interface for computing & comparing the video
     hash values for videos(codec, containers etc) supported by FFmpeg.
