@@ -96,4 +96,4 @@ from .exceptions import (
     VideoHashError,
 )
 from .videoduration import video_duration
-from .videohash import VideoHash
+from .videohash import VideoHash, HashAlgorithm
