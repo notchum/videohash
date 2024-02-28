@@ -1,4 +1,4 @@
 ImageHash
 Pillow
-imagedominantcolor
+imagedominantcolor @ git+https://github.com/notchum/imagedominantcolor.git
 yt-dlp
