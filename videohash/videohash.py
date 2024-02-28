@@ -24,6 +24,13 @@ from .utils import (
 from .videoduration import video_duration
 
 
+class HashAlgorithm:
+    PHASH = imagehash.phash
+    AHASH = imagehash.average_hash
+    DHASH = imagehash.dhash
+    WHASH = imagehash.whash
+
+
 class VideoHash:
     """
     VideoHash class provides an interface for computing & comparing the video
@@ -37,6 +44,7 @@ class VideoHash:
         storage_path: Optional[str] = None,
         download_worst: bool = False,
         frame_interval: Union[int, float] = 1,
+        hash_algorithm: HashAlgorithm = HashAlgorithm.WHASH,
     ) -> None:
         """
         :param path: Absolute path of the input video file.
@@ -60,6 +68,10 @@ class VideoHash:
                                Smaller frame_interval implies fewer frames and
                                vice-versa.
 
+        :param hash_algorithm: Hashing algorithm function to use from the imagehash
+                               module.
+                               The default algorithm is imagehash.whash (wavelet hash).
+
 
         :return: None
 
@@ -75,6 +87,7 @@ class VideoHash:
         self._storage_path = self.storage_path
         self.download_worst = download_worst
         self.frame_interval = frame_interval
+        self.hash_algorithm = hash_algorithm
 
         self.task_uid = VideoHash._get_task_uid()
 
@@ -570,7 +583,7 @@ class VideoHash:
 
         self.dominant_color_bitlist: List = []
 
-        for row in imagehash.whash(self.image).hash.astype(int).tolist():
+        for row in self.hash_algorithm(self.image).hash.astype(int).tolist():
             self.whash_bitlist.extend(row)
 
         dominant_color_list = []

@@ -4,7 +4,7 @@ import pytest
 
 from videohash.exceptions import DidNotSupplyPathOrUrl, StoragePathDoesNotExist
 from videohash.utils import create_and_return_temporary_directory
-from videohash.videohash import VideoHash
+from videohash.videohash import VideoHash, HashAlgorithm
 
 this_dir = os.path.dirname(os.path.realpath(__file__))
 
@@ -91,6 +91,23 @@ def test_all():
     assert videohash2 != videohash4
     assert videohash3 != videohash4
     assert videohash3.is_diffrent(videohash4)
+
+    source5 = "https://www.youtube.com/watch?v=GS6feMWzwIY"
+    videohash5 = VideoHash(url=source5, hash_algorithm=HashAlgorithm.PHASH)
+    hash5 = videohash5.hash
+    hash_hex5 = videohash5.hash_hex
+    assert hash5 == "0b1111110111001110000010110010010111111001010001000001101111100010"
+    assert hash_hex5 == "0xfdce0b25f9441be2"
+
+    assert hash5 != hash1
+    assert hash5 != hash2
+    assert hash5 != hash3
+    assert hash5 != hash4
+
+    assert videohash1 != videohash5
+    assert videohash2 != videohash5
+    assert videohash3 != videohash5
+    assert videohash4 != videohash5
 
     with pytest.raises(ValueError):
         # not padded with 0x
