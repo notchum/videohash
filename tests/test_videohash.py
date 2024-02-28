@@ -92,6 +92,20 @@ def test_all():
     assert videohash3 != videohash4
     assert videohash3.is_diffrent(videohash4)
 
+    source5 = "https://www.youtube.com/watch?v=GS6feMWzwIY"
+    videohash5 = VideoHash(url=source5, do_not_copy=True)
+    hash5 = videohash5.hash
+
+    assert hash5 != hash1
+    assert hash5 != hash2
+    assert hash5 != hash3
+    assert hash5 != hash4
+
+    assert videohash1 != videohash5
+    assert videohash2 != videohash5
+    assert videohash3 != videohash5
+    assert videohash4 != videohash5
+
     with pytest.raises(ValueError):
         # not padded with 0x
         VideoHash.hex2bin("741fcfff8f780000", 64)

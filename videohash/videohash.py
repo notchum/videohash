@@ -36,8 +36,8 @@ class VideoHash:
         url: Optional[str] = None,
         storage_path: Optional[str] = None,
         download_worst: bool = False,
-        frame_interval: Union[int, float] = 1,
         do_not_copy: bool = True,
+        frame_interval: Union[int, float] = 1,
     ) -> None:
         """
         :param path: Absolute path of the input video file.
@@ -54,6 +54,14 @@ class VideoHash:
 
         :param download_worst: If set to True, download the worst quality video.
                                The default value is False, set True to conserve bandwidth.
+
+        :param do_not_copy: If set to True, create a symbolic link pointing to
+                            the original video path instead of copying the video
+                            file to the storage directory.
+                            This should only be used if the original video file
+                            will not be modified/deleted during video-hash processing.
+                            The default value is False, set True to save processing time
+                            and disk space within the storage directory.
 
         :param frame_interval: Number of frames extracted per unit time, the
                                default value is 1 per unit time. For 1 frame
@@ -292,9 +300,9 @@ class VideoHash:
             self.video_path = os.path.join(self.video_dir, (f"video.{extension}"))
 
             if self.do_not_copy:
-               os.symlink(self.path, self.video_path)
+                os.symlink(self.path, self.video_path)
             else:
-               shutil.copyfile(self.path, self.video_path)
+                shutil.copyfile(self.path, self.video_path)
 
         if self.url:
 
@@ -315,9 +323,9 @@ class VideoHash:
             self.video_path = f"{self.video_dir}video.{extension}"
 
             if self.do_not_copy:
-               shutil.copyfile(downloaded_file, self.video_path)
+                os.symlink(downloaded_file, self.video_path)
             else:
-               shutil.copyfile(self.path, self.video_path)
+                shutil.copyfile(downloaded_file, self.video_path)
 
     def _create_required_dirs_and_check_for_errors(self) -> None:
         """

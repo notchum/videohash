@@ -28,9 +28,10 @@ def does_path_exists(path: str) -> bool:
     :rtype: bool
     """
     if os.path.isdir(path) or os.path.isfile(path):
-       return os.path.exists(path)
+        return os.path.exists(path)
     else:
-       return False
+        return False
+
 
 def create_and_return_temporary_directory() -> str:
     """
