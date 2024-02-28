@@ -12,6 +12,7 @@ from .exceptions import (
     FramesExtractorOutPutDirDoesNotExist,
 )
 from .utils import does_path_exists
+from .videoduration import video_duration
 
 # python module to extract the frames from the input video.
 # Uses the FFmpeg Software to extract the frames.
@@ -146,8 +147,11 @@ class FramesExtractor:
         ]
 
         crop_list = []
+        _video_duration = video_duration(video_path, ffmpeg_path)
 
         for start_time in time_start_list:
+            if start_time > int(_video_duration):
+                break
 
             command = f'"{ffmpeg_path}" -ss {start_time} -i "{video_path}" -vframes {frames} -vf cropdetect -f null -'
 
